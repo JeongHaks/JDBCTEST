@@ -34,18 +34,28 @@ public class FindBookInfo {
             //String query = " select book_id, title ,pubs, pub_date, author_id from book";
             //book + author 조인!
            //검색 하기.
-            String query ="SELECT book_id , title , pubs , pub_date ,AUTHOR_NAME \r\n"
+            String query ="SELECT book_id ,"
+            		+ "title ,"
+            		+ "pubs ,"
+            		+ "pub_date ,"
+            		+ "AUTHOR_NAME \r\n"
             		+ "FROM BOOK b ,AUTHOR a "
             		+ "WHERE b.AUTHOR_ID = a.AUTHOR_ID "
             		+ "AND  a.AUTHOR_NAME = ";
+            //AND a.author_name like ? "
            
             System.out.print("책 저자를 입력해주세요 : ");
             String authornamed = sc.nextLine(); 
+            
             pstmt = conn.prepareStatement(query +"'"+authornamed +"'");
+// 		    방법 2)
+//            pstmt.setString(5 +"%"+authornamed +"%");     //" ' " 이렇게 알아서 해준다. ""
+            // pstmt.setString(5 ,authornamed);
+            
             rs = pstmt.executeQuery();
 
             // 4.결과처리
-            System.out.println("책 번호 " + "\t" + "책 제목" + "\t" + "책출판" + "\t" + "       일자" + "\t\t\t"  + "책저자" + "\t\n");
+            System.out.println("책 번호 " + "\t" + "책 제목" + "\t" + "책출판" + "\t" + "       일자" + "\t\t\t"  + "책저자" + "\t");
             
             while (rs.next()) {
                 int bookId = rs.getInt("book_id");
@@ -55,9 +65,9 @@ public class FindBookInfo {
                 String author_id = rs.getString("AUTHOR_NAME");
                 
                 System.out.println(bookId + "\t" + bookTitle + "\t" + bookPubs + "\t" + pubDate + "\t"+ author_id + "\t");
-            }
-            sc.close();
-
+            }            
+            
+            //rs.getString(1), rs.getString(2) ... 이런식으로 값을 불러오는 방법
         } catch (ClassNotFoundException e) {
             System.out.println("error: 드라이버 로딩 실패 - " + e);
         } catch (SQLException e) {
@@ -65,12 +75,10 @@ public class FindBookInfo {
         } finally {
             // 5. 자원정리
             try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
+            	if (rs != null) { rs.close(); }
+                if (pstmt != null) { pstmt.close(); }
+                if (conn != null) {  conn.close();  }
+                if (sc != null) {  sc.close();  }
             } catch (SQLException e) {
                 System.out.println("error:" + e);
             }
