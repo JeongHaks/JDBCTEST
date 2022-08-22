@@ -36,7 +36,17 @@ public class FindBookInfo2 {
 			System.out.println(vo);
 		}
 		
-
+		//책 정보 추가하기.
+		System.out.print("책 정보를 추가해주세요.");
+		long boid =  sc.nextLong();
+		String botitle = sc.nextLine();
+		String bopubs = sc.nextLine();;
+		String bodate = sc.nextLine();;
+		String auname = sc.nextLine();;
+		
+		dao.getInsert(boid, botitle, bopubs, bodate, auname);
+		
+		
+		
 	}
-
 }

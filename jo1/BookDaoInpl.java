@@ -27,6 +27,7 @@ public class BookDaoInpl implements BookDao{
     return conn;
   }
   
+  //책 정보 가져오기.(조회)
   @Override
   public List<BookVo> getList() {
     List<BookVo> list = new ArrayList<BookVo>();
@@ -56,7 +57,7 @@ public class BookDaoInpl implements BookDao{
     }
     return list;
   }
-
+// 책 정보 검색하기.
   @Override
   public List<BookVo> getSearchList(String keyWord) {
     List<BookVo> list = new ArrayList<BookVo>();
@@ -88,5 +89,39 @@ public class BookDaoInpl implements BookDao{
     }
     return list;
   }
+  
+  //책 정보 추가하기
+  @Override
+  public void getInsert(long bookid, String botitle, String bopubs, String bo_date, String auname) {
+		  conn = getConnection();
+		  try {
+			  
+				  
+				  System.out.println("연결 완료");
+				  
+				  String query = "";	
+				  
+				  pstmt.setLong(1, bookid);
+				  pstmt.setString(2, botitle);
+				  pstmt.setString(3, bopubs);
+				  pstmt.setString(4, bo_date);
+				  pstmt.setString(5, auname);
+				  
+				  int count = pstmt.executeUpdate();
+				  
+				  //결과 처리 횟수 출력
+				  System.out.println(count + " 건 처리 완료");
+		  }catch(SQLException e) {
+			  System.out.println("error" + e);
+		  }finally {
+			  try {
+				  if(pstmt != null) {pstmt.close();}
+				  if(conn != null) {conn.close();}
+			  }catch(SQLException e) {
+				  System.out.println("error" + e);
+		      }
+	  	}
+  	}
+
 
 }
